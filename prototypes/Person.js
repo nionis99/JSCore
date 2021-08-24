@@ -4,7 +4,7 @@ function Person(name, age) {
 }
 
 Person.prototype.introduce = function () {
-    return 'My	name	is	' + this.name + '	and	I	am	' + this.age;
+    return 'My name is ' + this.name + ' and I am ' + this.age;
 };
 
 function myNew(constructor, ...theArgs) {
