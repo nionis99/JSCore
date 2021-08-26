@@ -1,7 +1,6 @@
 function NamedOne(firstName, lastName) {
     let _firstName = firstName;
     let _lastName = lastName;
-    let _fullName = `${firstName} ${lastName}`;
 
     return {
         get firstName() {
@@ -9,7 +8,6 @@ function NamedOne(firstName, lastName) {
         },
 
         set firstName(name) {
-            _fullName = `${name} ${_lastName}`;
             return _firstName = name;
         },
 
@@ -18,12 +16,11 @@ function NamedOne(firstName, lastName) {
         },
 
         set lastName(lastName) {
-            _fullName = `${_firstName} ${lastName}`;
             return _lastName = lastName;
         },
 
         get fullName() {
-            return _fullName;
+            return `${_firstName} ${_lastName}`;
         },
 
         set fullName(fullName) {
@@ -31,7 +28,6 @@ function NamedOne(firstName, lastName) {
             if (names.length >= 2) {
                 _firstName = names[0];
                 _lastName = names[names.length - 1];
-                _fullName = fullName;
             }
         }
     }
