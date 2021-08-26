@@ -9,7 +9,6 @@ function Vector(values) {
         throw new Error("Vectors are not the same length")
     }
 
-    // Could you please separate this function into 2: checkCompatibility and calculate to follow by single responsibility principle (https://en.wikipedia.org/wiki/Single-responsibility_principle)
     function checkCompatibility(vector, fn) {
         return vector.values.length === values.length ? calculate(fn) : throwError();
     }
@@ -39,4 +38,4 @@ console.log(a.add(b));
 console.log(a.substract(b));
 console.log(a.dot(b));
 console.log(a.norm(2));
-// console.log(a.add(c));
+console.log(a.add(c));
