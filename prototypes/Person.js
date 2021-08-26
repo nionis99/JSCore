@@ -12,7 +12,7 @@ function myNew(constructor, ...theArgs) {
 }
 
 function myNew2(constructor, ...theArgs) {
-    const object = Object.assign(constructor.prototype);
+    const object = Object.create(constructor.prototype);
     constructor.call(object, ...theArgs);
     return object;
 }
@@ -23,7 +23,7 @@ const john3 = new Person('John', 30);
 const jack = new Person('Jack', 40);
 
 console.log("isEqual: ", john2.name === john.name && john.name === john3.name);
-console.log(john.introduce());	//	My	name	is	John	and	I	am	30
-console.log(john2.introduce());	//	My	name	is	John	and	I	am	30
-console.log(john3.introduce());	//	My	name	is	John	and	I	am	30
-console.log(jack.introduce());	//	My	name	is	Jack	and	I	am	40
+console.log(john.introduce());	// My name is John and I am 30
+console.log(john2.introduce());	// My name is John and I am 30
+console.log(john3.introduce());	// My name is John and I am 30
+console.log(jack.introduce());	// My name is Jack and I am 40
