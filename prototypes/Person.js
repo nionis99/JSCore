@@ -12,7 +12,9 @@ function myNew(constructor, ...theArgs) {
 }
 
 function myNew2(constructor, ...theArgs) {
-    const object = Object.assign(constructor.prototype);
+    const object = Object.assign(constructor.prototype); 
+    // Usually for this puprose it's used ```Object.create()```.
+    // const object = Object.create(constructor.prototype);
     constructor.call(object, ...theArgs);
     return object;
 }
