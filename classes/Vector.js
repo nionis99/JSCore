@@ -25,6 +25,7 @@ function Vector(values) {
         get values() {
             return values;
         },
+        // Also you should provide ```equals``` method, to check 2 vectors are identical.
     }
 }
 
