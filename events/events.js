@@ -14,4 +14,5 @@ function createMatrixTable(tableSize) {
     return document.write(tableContainer);
 }
 
+
 createMatrixTable(100);
