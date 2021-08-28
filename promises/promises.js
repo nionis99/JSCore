@@ -90,7 +90,7 @@ const myPromise = new MyPromise((resolve) => {
 }).catch(() => console.log("Error"));
 console.log(4);
 
-class Promises extends MyPromise {
+class Promises extends MyPromise { // You can just name this class like in the task: "ReversePromise"
     constructor(fn) {
         super(_ => _());
         this.fn = fn;
@@ -108,7 +108,7 @@ class Promises extends MyPromise {
 
         while (this.stack.length) currentPromise = currentPromise.then(this.stack.pop());
 
-        return currentPromise;
+        return currentPromise; // not sure why do you need to return value with promise here since you aren't using that value in the constructor, but it's ok
     }
 }
 
