@@ -90,7 +90,7 @@ const myPromise = new MyPromise((resolve) => {
 }).catch(() => console.log("Error"));
 console.log(4);
 
-class Promises extends MyPromise {
+class ReversePromise extends MyPromise {
     constructor(fn) {
         super(_ => _());
         this.fn = fn;
@@ -112,7 +112,7 @@ class Promises extends MyPromise {
     }
 }
 
-const reversePromise = new Promises((resolve) => {
+const reversePromise = new ReversePromise((resolve) => {
     console.log(1);
     resolve();
 })
