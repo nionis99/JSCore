@@ -22,7 +22,7 @@ class ItemBox<T> extends Box {
         this.color = color;
     }
 
-    public printBoxValues() {
+    printBoxValues(): void {
         return console.log(`The box ${this.name} is ${this.color} and has value ${this.value} type of ${typeof this.value}.`);
     }
 }
