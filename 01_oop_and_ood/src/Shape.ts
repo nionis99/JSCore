@@ -16,17 +16,21 @@ export abstract class Shape {
         }
     }
 
-    public toString() {
+    toString() {
         return `A Shape with color of ${this.color} and ${this.isFilled ? 'filled' : 'not filled'}. Points: ${this.points.join(', ').toString()}.`;
     }
 
-    public getPerimeter() {
-        let perimeter = 0;
+    getPerimeter() {
+        return this.getDistances().reduce((sum, value) => sum + value);
+    }
+
+    getDistances() {
+        let distances:Array<number> = [];
         this.points.forEach((point, index, points) => {
             const distance = point.distance(points[index + 1 != points.length ? index + 1 : 0])
-            perimeter += distance;
+            distances.push(distance);
         });
-        return perimeter;
+        return distances;
     }
 
     abstract getType(): string;
