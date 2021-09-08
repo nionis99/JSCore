@@ -10,7 +10,6 @@ export class Triangle extends Shape {
     }
 
     isEquilateral() {
-        console.log(this.getDistances());
         return this.getDistances().every(distance => distance === this.getDistances()[0]);
     }
 
