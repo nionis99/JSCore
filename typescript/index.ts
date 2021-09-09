@@ -1,8 +1,8 @@
-interface BoxUseCase {
-    printBoxValues: () => void;
+interface ItemBoxInterface {
+    resetValueParameters: () => void;
 }
 
-abstract class Box implements BoxUseCase {
+abstract class Box {
     protected name: string;
 
     protected constructor(name: string) {
@@ -12,9 +12,9 @@ abstract class Box implements BoxUseCase {
     abstract printBoxValues(): void;
 }
 
-class ItemBox<T> extends Box {
+class ItemBox<T> extends Box implements ItemBoxInterface {
     private readonly value: T;
-    private readonly color: string;
+    private color: string;
 
     constructor(name: string, value: T, color: string) {
         super(name);
@@ -25,12 +25,19 @@ class ItemBox<T> extends Box {
     printBoxValues(): void {
         return console.log(`The box ${this.name} is ${this.color} and has value ${this.value} type of ${typeof this.value}.`);
     }
+
+    resetValueParameters(): void {
+        this.name = "";
+        this.color = "";
+    }
+
 }
 
-const itemBoxA = new ItemBox('A', 1, "yellow");
-const itemBoxB = new ItemBox('B', "2", "green");
-const itemBoxC = new ItemBox('C', true, "red");
+const itemBoxA = new ItemBox<number>('A', 1, "yellow");
+const itemBoxB = new ItemBox<string>('B', "2", "green");
+const itemBoxC = new ItemBox<boolean>('C', true, "red");
 
 itemBoxA.printBoxValues();
 itemBoxB.printBoxValues();
 itemBoxC.printBoxValues();
+itemBoxC.resetValueParameters();
