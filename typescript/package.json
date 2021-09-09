@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "npx tsc index.ts",
+    "run": "node index.js"
+  },
+  "dependencies": {
+    "typescript": "^4.4.2"
+  }
+}
