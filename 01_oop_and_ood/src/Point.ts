@@ -13,7 +13,7 @@ export class Point {
     }
 
     distance(): number;
-    distance(other: Point);
+    distance(other: Point): number;
     distance(firstValue?: number | Point, secondValue?: number): number {
         if (firstValue instanceof Point) return this.calculateDistance(this.x - firstValue.x, this.y - firstValue.y);
         if (secondValue) return this.calculateDistance(this.x - firstValue, this.y - secondValue);
