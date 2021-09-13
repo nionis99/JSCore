@@ -23,6 +23,10 @@ export abstract class Item implements Comparable<Item> {
         return this.id;
     }
 
+    static getNumberOfItems(): number {
+        return this.numberOfItems;
+    }
+
     getName(): string {
         return this.name;
     }
@@ -54,7 +58,9 @@ export abstract class Item implements Comparable<Item> {
         if (this.value > other.value) return 1;
         if (this.value < other.value) return -1;
         if (this.value === other.value) {
-            return this.name.toLowerCase() > other.name.toLowerCase() ? 1 : -1
+            if (this.name.toLowerCase() > other.name.toLowerCase()) return 1;
+            if (this.name.toLowerCase() < other.name.toLowerCase()) return -1;
+            return 0;
         }
     }
 
@@ -65,4 +71,6 @@ export abstract class Item implements Comparable<Item> {
     static reset(): void {
         counter = 0;
     }
+
+    abstract use(): void;
 }
