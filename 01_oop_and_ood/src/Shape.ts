@@ -6,14 +6,13 @@ export abstract class Shape {
     protected isFilled?: boolean;
 
     constructor(points: Point[]);
-    constructor(points: Point[], color?: string, isFilled?: boolean) {
-        if (points.length >= 3) {
-            this.color = color || "green";
-            this.isFilled = isFilled !== undefined ? isFilled : true;
-            this.points = points
-        } else {
+    constructor(points: Point[], color: string = 'green', isFilled: boolean = true) {
+        if (points.length < 3) {
             throw new Error("Shape must have 3 points at least")
         }
+        this.color = color;
+        this.isFilled = isFilled;
+        this.points = points;
     }
 
     toString() {
@@ -25,7 +24,7 @@ export abstract class Shape {
     }
 
     getDistances() {
-        let distances:Array<number> = [];
+        let distances: number[] = [];
         this.points.forEach((point, index, points) => {
             const distance = point.distance(points[index + 1 != points.length ? index + 1 : 0])
             distances.push(distance);

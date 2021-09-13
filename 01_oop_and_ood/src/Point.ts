@@ -3,16 +3,18 @@ export class Point {
     private readonly y: number;
 
     constructor();
-    constructor(firstValue?: number | Point, secondValue?: number) {
-        this.x = firstValue instanceof Point ? firstValue.x : firstValue || 0;
-        this.y = firstValue instanceof Point ? firstValue.y : secondValue || 0;
+    constructor(x: number = 0, y: number = 0) {
+        this.x = x;
+        this.y = y;
     };
 
     toString() {
         return `(${this.x}, ${this.y})`;
     }
 
-    distance(firstValue?: number | Point, secondValue?: number) {
+    distance(): number;
+    distance(other: Point): number;
+    distance(firstValue?: number | Point, secondValue?: number): number {
         if (firstValue instanceof Point) return this.calculateDistance(this.x - firstValue.x, this.y - firstValue.y);
         if (secondValue) return this.calculateDistance(this.x - firstValue, this.y - secondValue);
         return this.calculateDistance(this.x, this.y);
