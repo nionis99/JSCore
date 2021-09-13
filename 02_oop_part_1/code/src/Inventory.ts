@@ -11,7 +11,8 @@ export default class Inventory {
         this.items.push(item);
     }
 
-    sort(comparator?: ItemComparator) {
+    sort(): void
+    sort(comparator?: ItemComparator): void {
         this.items.sort(comparator ? comparator.compare : undefined);
     }
 
