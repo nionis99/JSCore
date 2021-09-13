@@ -1,7 +1,7 @@
 import Page from "./Page";
 
 export default class Pages implements Iterable<Page> {
-    private pages: Page[];
+    pages: Page[];
 
     constructor(pages: Page[]) {
         this.pages = pages;
