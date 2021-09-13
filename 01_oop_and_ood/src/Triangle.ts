@@ -1,6 +1,9 @@
 import {Shape} from './Shape';
+import {Point} from "./Point";
 
 export class Triangle extends Shape {
+    constructor(points: Point[]);
+    constructor(points: Point[], color?: string, isFilled?: boolean);
     constructor(...props) {
         super(props);
     }
