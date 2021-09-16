@@ -10,6 +10,6 @@ export default class Book extends Item {
     }
 
     toString(): string {
-        return `Book: ${this.getTitle()} by ${this.author} with number of pages: ${this.pages.pages.length}, ${super.toString()}`;
+        return `${this.constructor.name}: ${this.getTitle()} by ${this.author} with number of pages: ${this.pages.pages.length}, ${super.toString()}`;
     }
 }
