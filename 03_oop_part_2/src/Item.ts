@@ -43,7 +43,7 @@ function PagesIterable<TBase extends Constructor<BaseItem>>(Base: TBase) {
         };
 
         toString() {
-            return `${this.constructor.name}: `;
+            return `here is page ${this.pages.getCurrentPage()?.pageType} #${this.pages.getCurrentPage()?.pageNumber} and it\'s material is ${this.pages.getCurrentPage()?.pageMaterial}`;
         }
     }
 }
