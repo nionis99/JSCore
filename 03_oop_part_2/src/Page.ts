@@ -1,7 +1,15 @@
-export default class Page {
-    private pageNumber: number;
-    private pageType: string;
-    private pageMaterial: string;
+interface PageFactory {
+    pageNumber: number;
+    pageType: string;
+    pageMaterial: string;
+
+    toString(): void;
+}
+
+export default class Page implements PageFactory {
+    pageNumber: number;
+    pageType: string;
+    pageMaterial: string;
 
     constructor(pageNumber: number, pageType: string, pageMaterial: string) {
         this.pageNumber = pageNumber;
@@ -10,6 +18,6 @@ export default class Page {
     }
 
     toString() {
-        return `here is page ${this.pageType} #${this.pageNumber} it\'s material is ${this.pageMaterial}`
+        return `here is page ${this.pageType} #${this.pageNumber} and it\'s material is ${this.pageMaterial}`
     }
 }

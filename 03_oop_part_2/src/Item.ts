@@ -1,6 +1,6 @@
 import Pages from "./Pages";
 
-export default abstract class Item {
+abstract class BaseItem {
     pages: Pages;
     private title: string;
 
@@ -17,28 +17,38 @@ export default abstract class Item {
         this.title = title;
     }
 
-    [Symbol.iterator]() {
-        let pointer = 0;
-        let components = this.pages.pages;
-        let that = this;
-
-        return {
-            next(): IteratorResult<Item> {
-                if (pointer < components.length) {
-                    pointer++;
-                    return {
-                        done: false,
-                        value: that
-                    }
-                } else {
-                    return {
-                        done: true,
-                        value: null
-                    }
-                }
-            }
-        }
-    }
-
     abstract toString(): string;
 }
+
+type Constructor<T = {}> = new (...args: any[]) => T;
+
+function PagesIterable<TBase extends Constructor<BaseItem>>(Base: TBase) {
+    return class Iterable extends Base {
+        [Symbol.iterator]() {
+            let pointer = 0;
+            let components = this.pages.pages;
+            let that = this;
+
+            return {
+                next(): IteratorResult<BaseItem> {
+                    if (pointer < components.length) {
+                        that.pages.setCurrentPage(components[pointer]);
+                        pointer += 1;
+                        return {done: false, value: that};
+                    }
+                    that.pages.setCurrentPage(undefined);
+                    return {done: true, value: null};
+                }
+            }
+        };
+
+        toString() {
+            return `${this.constructor.name}: `;
+        }
+    }
+}
+
+// @ts-ignore Iterable mixin
+const Item = PagesIterable<BaseItem>(BaseItem);
+
+export default Item;
