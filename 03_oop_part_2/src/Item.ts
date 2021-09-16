@@ -1,8 +1,7 @@
 import Pages from "./Pages";
-import Page from "./Page";
 
-export default abstract class Item implements Iterable<Page> {
-    private pages: Pages;
+export default abstract class Item {
+    pages: Pages;
     private title: string;
 
     constructor(title: string, pages: Pages) {
@@ -21,13 +20,15 @@ export default abstract class Item implements Iterable<Page> {
     [Symbol.iterator]() {
         let pointer = 0;
         let components = this.pages.pages;
-        return {
+        let that = this;
 
-            next(): IteratorResult<Page> {
+        return {
+            next(): IteratorResult<Item> {
                 if (pointer < components.length) {
+                    pointer++;
                     return {
                         done: false,
-                        value: components[pointer++]
+                        value: that
                     }
                 } else {
                     return {

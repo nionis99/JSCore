@@ -12,6 +12,6 @@ export default class Comics extends Item {
     }
 
     toString(): string {
-        return `Comics: ${this.getTitle()} by ${this.author}, the artist is ${this.artist}, number of pages: ${0}`;
+        return `Comics: ${this.getTitle()} by ${this.author}, the artist is ${this.artist}, number of pages: ${this.pages.pages.length}, ${this.pages.pages[0].toString()}`;
     }
 }
