@@ -18,11 +18,13 @@ var Gui = /** @class */ (function () {
     };
     return Gui;
 }());
-// Don't know how these two would relate.
+// Might be wrong
 var Client = /** @class */ (function () {
     function Client(gui) {
+        this.gui = gui;
     }
     Client.prototype.onShip = function (shipment) {
+        return this.gui.trigger('onShip', shipment);
     };
     return Client;
 }());
@@ -36,9 +38,18 @@ var state = {
 };
 // But this looks like something now.
 var GuiMock = new Gui();
-GuiMock.on('onShip', function (ship) { return console.log(ship); }); // using callback
 var shipment1 = new Shipment_1["default"](state);
 var shipment2 = new Shipment_1["default"](state);
-GuiMock.trigger('onShip', shipment1); // Shipment with the ID 0 will be picked up from  addressFrom and shipped to  addressTo Cost = 9.36
+var shipment3 = new Shipment_1["default"](state);
+var client = new Client(GuiMock);
+client.gui.on('onShipment', function (shipment) { return console.log("Client uses gui: " + shipment); });
+client.gui.trigger('onShipment', shipment3);
+GuiMock.on('onShip', function (ship) { return console.log(ship); }); // using callback
+//Shipment with the ID 0 will be picked up from 92021 12292 4th Ave SE, Bellevue, Waand shipped to 67721 1313 Mockingbird Lane, Tulsa, OK
+// Cost = 9.36
+GuiMock.trigger('onShip', shipment1);
+//Shipment with the ID 1 will be picked up from 92021 12292 4th Ave SE, Bellevue, Waand shipped to 67721 1313 Mockingbird Lane, Tulsa, OK
+// Cost = 9.36
 GuiMock.trigger('onShip', shipment2);
-GuiMock.trigger('onShip', shipment2);
+// Throw
+// GuiMock.trigger('onShip2', shipment2);

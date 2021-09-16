@@ -22,13 +22,16 @@ class Gui {
     }
 }
 
-// Don't know how these two would relate.
+// Might be wrong
 class Client {
+    gui: Gui;
+
     constructor(gui: Gui) {
+        this.gui = gui;
     }
 
     private onShip(shipment: Shipment) {
-
+        return this.gui.trigger('onShip', shipment);
     }
 }
 
@@ -43,14 +46,20 @@ const state: State = {
 
 // But this looks like something now.
 const GuiMock = new Gui();
-GuiMock.on('onShip', (ship) => console.log(ship)); // using callback
+
 const shipment1 = new Shipment(state);
 const shipment2 = new Shipment(state);
+const shipment3 = new Shipment(state);
+const client = new Client(GuiMock);
+client.gui.on('onShipment', (shipment) => console.log(`Client uses gui: ${shipment}`));
+client.gui.trigger('onShipment', shipment3);
 
+GuiMock.on('onShip', (ship) => console.log(ship)); // using callback
 //Shipment with the ID 0 will be picked up from 92021 12292 4th Ave SE, Bellevue, Waand shipped to 67721 1313 Mockingbird Lane, Tulsa, OK
 // Cost = 9.36
 GuiMock.trigger('onShip', shipment1);
 //Shipment with the ID 1 will be picked up from 92021 12292 4th Ave SE, Bellevue, Waand shipped to 67721 1313 Mockingbird Lane, Tulsa, OK
 // Cost = 9.36
 GuiMock.trigger('onShip', shipment2);
-GuiMock.trigger('onShip', shipment2);
+// Throw
+// GuiMock.trigger('onShip2', shipment2);
