@@ -12,11 +12,15 @@ export interface State {
 
 let ID = 0;
 
-export default class Shipment {
+interface IShipment {
+    ship(): string;
+}
+
+export default class Shipment implements IShipment {
     static LETTER_SIZE = 15;
     static OVERSIZE = 160;
     private state: State;
-    private shipper: Shipper;
+    protected shipper: Shipper;
 
     constructor(state: State) {
         const shipperSource = parseInt(state.fromZipCode[0]);
@@ -48,3 +52,46 @@ export default class Shipment {
             `${fromZipCode} and shipped to ${toAddress} ${toZipCode}\nCost = ${this.getCost(weight)}`;
     }
 }
+
+export class Letter extends Shipment {
+}
+
+export class Package extends Shipment {
+}
+
+export class Oversize extends Shipment {
+}
+
+export class ShipmentDecorator implements IShipment {
+    protected shipment: IShipment;
+
+    constructor(shipment: IShipment) {
+        this.shipment = shipment;
+    }
+
+    public ship(): string {
+        return this.shipment.ship();
+    }
+
+}
+
+export class FragileShipmentDecorator extends ShipmentDecorator {
+    public ship() {
+        return this.shipment.ship() + '\n**MARK FRAGILE**';
+    }
+}
+
+export class DoNotLeaveShipmentDecorator extends ShipmentDecorator {
+    public ship() {
+        return this.shipment.ship() + '\n**MARK DO NOT LEAVE IF ADDRESS NOT AT HOME**';
+    }
+}
+
+export class ReturnReceiptShipmentDecorator extends ShipmentDecorator {
+    public ship() {
+        return this.shipment.ship() + '\n**MARK RETURN RECEIPT REQUESTED**';
+    }
+}
+
+
+

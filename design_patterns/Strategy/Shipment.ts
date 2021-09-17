@@ -46,9 +46,8 @@ export default class Shipment {
 
     ship() {
         const {shipmentId, fromZipCode, fromAddress, toZipCode, toAddress, weight} = this.state;
-        const pickedFrom = fromZipCode + ' ' + fromAddress;
-        const shippedTo = toZipCode + ' ' + toAddress
-        return `Shipment with the ID ${shipmentId} will be picked up from ${pickedFrom}` +
-            `and shipped to ${shippedTo} \nCost = ${this.getCost(weight)}`;
+        return `Shipment with the ID ${shipmentId} will be picked up from ${fromAddress} ` +
+            `${fromZipCode} and shipped to ${toAddress} ${toZipCode}\nCost = ${this.getCost(weight)}`;
     }
 }
+
