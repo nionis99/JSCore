@@ -28,7 +28,6 @@ const state3: State = {
     weight: 24
 }
 
-// But this looks like something now.
 const GuiMock = new Gui();
 
 const shipment1 = new Shipment(state1);
