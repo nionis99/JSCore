@@ -4,14 +4,10 @@ import {ItemComparator} from "./ItemComparator";
 export default class Inventory {
     private items: Array<Item> = [];
 
-    constructor() {
-    }
-
     addItem(item: Item): void {
         this.items.push(item);
     }
 
-    sort(): void
     sort(comparator?: ItemComparator): void {
         this.items.sort(comparator ? comparator.compare : undefined);
     }

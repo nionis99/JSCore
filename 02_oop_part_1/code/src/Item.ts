@@ -11,12 +11,11 @@ export abstract class Item implements Comparable<Item> {
     private weight: number;
 
     constructor(name: string, value: number, weight: number) {
-        this.id = id === 0 ? id : id + 1;
+        counter += 1;
         this.name = name;
         this.value = value;
         this.weight = weight;
-        counter++;
-        id += 1;
+        this.id = counter - 1;
     }
 
     getId(): number {
@@ -24,7 +23,7 @@ export abstract class Item implements Comparable<Item> {
     }
 
     static getNumberOfItems(): number {
-        return this.numberOfItems;
+        return counter;
     }
 
     getName(): string {
