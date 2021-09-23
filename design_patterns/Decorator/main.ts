@@ -1,8 +1,32 @@
-import {
-    DoNotLeaveShipmentDecorator, FragileShipmentDecorator, Letter,
-    Oversize, Package, ReturnReceiptShipmentDecorator, State
+import Shipment, {
+    AbstractShipmentFactory,
+    DoNotLeaveShipmentDecorator, FragileShipmentDecorator, ReturnReceiptShipmentDecorator, ShipmentFactory, State
 } from "./Shipment";
 import {Client, Gui} from "./Client";
+import {AirEastShipper, ChicagoSprintShipper, PacificParcelShipper, Shipper} from "./Shipper";
+
+function createShipper(fromZipCode: string) {
+    const shipperSource = parseInt(fromZipCode[0]);
+    if (shipperSource > 4 && shipperSource < 7) {
+        return new ChicagoSprintShipper();
+    } else if (shipperSource > 7) {
+        return new PacificParcelShipper()
+    } else {
+        return new AirEastShipper()
+    }
+}
+
+function createShipment(factory: AbstractShipmentFactory, state: State, shipper: Shipper) {
+    if (state.weight <= 15) {
+        return factory.createLetter(state, shipper);
+    }
+    if (state.weight <= 160) {
+        return factory.createPackage(state, shipper);
+    }
+    return factory.createOversize(state, shipper);
+}
+
+const shipmentFactory = new ShipmentFactory();
 
 const state1: State = {
     shipmentId: 0,
@@ -32,19 +56,21 @@ const state3: State = {
 }
 
 const GuiMock = new Gui();
-
-let letterShipment = new Letter(state1);
-let packageShipment = new Package(state2);
-let oversizeShipment = new Oversize(state3);
+const shipper1: Shipper = createShipper(state1.fromZipCode);
+let shipment1: Shipment = createShipment(shipmentFactory, state1, shipper1);
+const shipper2: Shipper = createShipper(state2.fromZipCode);
+const shipment2: Shipment = createShipment(shipmentFactory, state1, shipper2);
+const shipper3: Shipper = createShipper(state3.fromZipCode);
+const shipment3: Shipment = createShipment(shipmentFactory, state1, shipper3);
 // @ts-ignore
-packageShipment = new FragileShipmentDecorator(packageShipment);
+shipment1 = new FragileShipmentDecorator(shipment1);
 // @ts-ignore
-packageShipment = new DoNotLeaveShipmentDecorator(packageShipment);
+shipment1 = new DoNotLeaveShipmentDecorator(shipment1);
 // @ts-ignore
-packageShipment = new ReturnReceiptShipmentDecorator(packageShipment);
+shipment1 = new ReturnReceiptShipmentDecorator(shipment1);
 const client = new Client(GuiMock);
 
-client.gui.on('onShipment', (shipment) => console.log(`Client uses gui: ${shipment}`));
-client.gui.trigger('onShipment', letterShipment);
-client.gui.trigger('onShipment', packageShipment);
-client.gui.trigger('onShipment', oversizeShipment);
+client.gui.on('onShipment', (shipment) => console.log(`Client uses gui: ${shipment.ship()}`));
+client.gui.trigger('onShipment', shipment1);
+client.gui.trigger('onShipment', shipment2);
+client.gui.trigger('onShipment', shipment3);

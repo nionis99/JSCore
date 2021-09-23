@@ -1,4 +1,4 @@
-import {AirEastShipper, ChicagoSprintShipper, PacificParcelShipper, Shipper} from "./Shipper";
+import {Shipper} from "./Shipper";
 
 export interface State {
     shipmentId: number;
@@ -18,16 +18,9 @@ export default class Shipment {
     private state: State;
     private shipper: Shipper;
 
-    constructor(state: State) {
-        const shipperSource = parseInt(state.fromZipCode[0]);
+    constructor(state: State, shipper: Shipper) {
         this.state = {...state, shipmentId: this.getShipmentId()};
-        if (shipperSource > 4 && shipperSource < 7) {
-            this.setShipper(new ChicagoSprintShipper())
-        } else if (shipperSource > 7) {
-            this.setShipper(new PacificParcelShipper())
-        } else {
-            this.setShipper(new AirEastShipper())
-        }
+        this.shipper = shipper;
     }
 
     setShipper(shipper: Shipper) {

@@ -1,6 +1,7 @@
-import {State} from "./Shipment";
+import Shipment, {State} from "./Shipment";
 import {Client, Gui} from "./Client";
-import {Letter, Oversize, Package} from "./Shipments";
+import {AbstractShipmentFactory, ShipmentFactory} from "./Shipments";
+import {AirEastShipper, ChicagoSprintShipper, PacificParcelShipper, Shipper} from "./Shipper";
 
 const state1: State = {
     shipmentId: 0,
@@ -29,14 +30,41 @@ const state3: State = {
     weight: 240
 }
 
+function createShipper(fromZipCode: string) {
+    const shipperSource = parseInt(fromZipCode[0]);
+    if (shipperSource > 4 && shipperSource < 7) {
+        return new ChicagoSprintShipper();
+    } else if (shipperSource > 7) {
+        return new PacificParcelShipper()
+    } else {
+        return new AirEastShipper()
+    }
+}
+
+function createShipment(factory: AbstractShipmentFactory, state: State, shipper: Shipper) {
+    if (state.weight <= 15) {
+        return factory.createLetter(state, shipper);
+    }
+    if (state.weight <= 160) {
+        return factory.createPackage(state, shipper);
+    }
+    return factory.createOversize(state, shipper);
+}
+
+const shipmentFactory = new ShipmentFactory();
+
 const GuiMock = new Gui();
 
-const shipment1 = new Letter(state1);
-const shipment2 = new Package(state2);
-const shipment3 = new Oversize(state3);
+const shipper1: Shipper = createShipper(state1.fromZipCode);
+const shipment1: Shipment = createShipment(shipmentFactory, state1, shipper1);
+const shipper2: Shipper = createShipper(state2.fromZipCode);
+const shipment2: Shipment = createShipment(shipmentFactory, state1, shipper2);
+const shipper3: Shipper = createShipper(state3.fromZipCode);
+const shipment3: Shipment = createShipment(shipmentFactory, state1, shipper3);
+
 const client = new Client(GuiMock);
 
-client.gui.on('onShipment', (shipment) => console.log(`Client uses gui: ${shipment}`));
+client.gui.on('onShipment', (shipment) => console.log(`Client uses gui: ${shipment.ship()}`));
 client.gui.trigger('onShipment', shipment1);
 client.gui.trigger('onShipment', shipment2);
 client.gui.trigger('onShipment', shipment3);

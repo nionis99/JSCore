@@ -1,4 +1,4 @@
-import {AirEastShipper, ChicagoSprintShipper, PacificParcelShipper, Shipper} from "./Shipper";
+import {Shipper} from "./Shipper";
 
 export interface State {
     shipmentId: number;
@@ -16,22 +16,16 @@ interface IShipment {
     ship(): string;
 }
 
+
 export default class Shipment implements IShipment {
     static LETTER_SIZE = 15;
     static OVERSIZE = 160;
     private state: State;
     protected shipper: Shipper;
 
-    constructor(state: State) {
-        const shipperSource = parseInt(state.fromZipCode[0]);
+    constructor(state: State, shipper: Shipper) {
         this.state = {...state, shipmentId: this.getShipmentId()};
-        if (shipperSource > 4 && shipperSource < 7) {
-            this.setShipper(new ChicagoSprintShipper())
-        } else if (shipperSource > 7) {
-            this.setShipper(new PacificParcelShipper())
-        } else {
-            this.setShipper(new AirEastShipper())
-        }
+        this.shipper = shipper;
     }
 
     setShipper(shipper: Shipper) {
@@ -51,15 +45,6 @@ export default class Shipment implements IShipment {
         return `Shipment with the ID ${shipmentId} will be picked up from ${fromAddress} ` +
             `${fromZipCode} and shipped to ${toAddress} ${toZipCode}\nCost = ${this.getCost(weight)}`;
     }
-}
-
-export class Letter extends Shipment {
-}
-
-export class Package extends Shipment {
-}
-
-export class Oversize extends Shipment {
 }
 
 export class ShipmentDecorator implements IShipment {
@@ -90,6 +75,35 @@ export class DoNotLeaveShipmentDecorator extends ShipmentDecorator {
 export class ReturnReceiptShipmentDecorator extends ShipmentDecorator {
     public ship() {
         return this.shipment.ship() + '\n**MARK RETURN RECEIPT REQUESTED**';
+    }
+};
+
+export interface AbstractShipmentFactory {
+    createLetter: (state: State, shipper: Shipper) => Shipment;
+    createPackage: (state: State, shipper: Shipper) => Shipment;
+    createOversize: (state: State, shipper: Shipper) => Shipment;
+}
+
+class Letter extends Shipment {
+}
+
+class Package extends Shipment {
+}
+
+class Oversize extends Shipment {
+}
+
+export class ShipmentFactory implements AbstractShipmentFactory {
+    createLetter(state: State, shipper: Shipper): Shipment {
+        return new Letter(state, shipper);
+    }
+
+    createPackage(state: State, shipper: Shipper): Shipment {
+        return new Package(state, shipper);
+    }
+
+    createOversize(state: State, shipper: Shipper): Shipment {
+        return new Oversize(state, shipper);
     }
 }
 

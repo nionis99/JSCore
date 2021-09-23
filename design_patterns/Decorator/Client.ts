@@ -1,7 +1,11 @@
 import Shipment from "./Shipment";
 
+interface IEvents {
+    [key: string]: Array<(state: Shipment) => void>
+}
+
 export class Gui {
-    protected events: object;
+    protected events: IEvents;
 
     constructor() {
         this.events = {};
@@ -18,11 +22,10 @@ export class Gui {
             throw new Error(`Can't trriger an event. Event "${eventType}" doesn't exits.`);
         }
 
-        this.events[eventType].forEach((callback) => callback(state.ship())); // Calling ship itself
+        this.events[eventType].forEach((callback) => callback(state)); // Calling ship itself
     }
 }
 
-// Might be wrong
 export class Client {
     gui: Gui;
 
