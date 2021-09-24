@@ -21,7 +21,7 @@ export default {
             rate: 1936.27
         },
         {
-            name: "US. $",
+            name: "US $",
             rate: 1.06
         }
     ]

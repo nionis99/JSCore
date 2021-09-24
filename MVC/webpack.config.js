@@ -41,7 +41,11 @@ module.exports = {
                 options: {
                     name: "assets/img/[name].[ext]?[hash]"
                 }
-            }
+            },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
         ]
     },
     plugins: [

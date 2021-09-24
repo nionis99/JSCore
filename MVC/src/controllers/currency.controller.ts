@@ -6,7 +6,6 @@ export class CurrencyController {
     constructor(private currencyService: CurrencyService, private currencyView: CurrencyView) {
         this.currencyService.init(this.displayCurrencies);
 
-        // Init
         this.displayCurrencies(this.currencyService.currencies);
     }
 
