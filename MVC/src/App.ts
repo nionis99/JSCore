@@ -1,6 +1,4 @@
-import {CurrencyController} from './controllers/currency.controller';
-import {CurrencyService} from './services/currency.service';
-import {CurrencyView} from './views/currency.view';
+import {CurrencyConverterController} from './controllers/currency.controller';
 import './style.css';
 
-const app = new CurrencyController(new CurrencyService(), new CurrencyView());
+new CurrencyConverterController();

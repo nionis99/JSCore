@@ -1,32 +1,32 @@
-export interface CurrencyDto {
+export interface CurrencyType {
+    id: number;
     name: string;
     rate: number;
+    euroValue: number;
+    currencyValue: number;
 }
 
-export class Currency {
-    public id: string;
-    public name: string;
-    public rate: number;
+export class CurrencyConverter {
+    currencies: CurrencyType[]
 
-    constructor(
-        {name, rate}: CurrencyDto = {
-            name: null,
-            rate: null
-        }
-    ) {
-        this.id = this.uuidv4();
-        this.name = name;
-        this.rate = rate;
+    constructor() {
     }
 
-    uuidv4(): string {
-        return (([1e7] as any) + -1e3 + -4e3 + -8e3 + -1e11).replace(
-            /[018]/g,
-            (c: number) =>
-                (
-                    c ^
-                    (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-                ).toString(16)
-        );
+    setCurrencies(currencies: CurrencyType[]) {
+        this.currencies = currencies;
+    }
+
+    getCurrencies(): CurrencyType[] {
+        return this.currencies;
+    }
+
+    convertFromEuro(index: number, euroValue: number): void {
+        this.currencies[index].euroValue = euroValue;
+        this.currencies[index].currencyValue = parseFloat((euroValue * this.currencies[index].rate).toFixed(2));
+    }
+
+    convertToEuro(index: number, currencyValue: number): void {
+        this.currencies[index].currencyValue = currencyValue;
+        this.currencies[index].euroValue = parseFloat((currencyValue / this.currencies[index].rate).toFixed(2));
     }
 }

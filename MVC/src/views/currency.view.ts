@@ -1,4 +1,5 @@
-import {Currency} from '../models/currency.model';
+import {CurrencyConverterController} from "../controllers/currency.controller";
+import {CurrencyType} from "../models/currency.model";
 
 export class CurrencyView {
     private app: HTMLElement;
@@ -6,14 +7,23 @@ export class CurrencyView {
     private title: HTMLElement;
     private currencyList: HTMLElement;
 
-    constructor() {
+    constructor(controller: CurrencyConverterController) {
         this.app = this.getElement('#root');
         this.form = this.createElement('form');
         this.title = this.createElement('h1');
         this.title.textContent = 'Currency converter';
         this.currencyList = this.createElement('ul', 'currency-list');
+
+        this.currencyList.addEventListener('change', (event) => {
+            const el = (event.target as HTMLInputElement);
+            const index = parseInt(el.parentElement.id);
+            if (el.name === 'euro') controller.convertFromEuro(index, parseInt(el.value));
+            else controller.convertToEuro(index, parseInt(el.value));
+        })
+
         this.form.append(this.currencyList);
         this.app.append(this.title, this.form);
+        controller.firstRender();
     }
 
     createElement(tag: string, className?: string) {
@@ -28,13 +38,14 @@ export class CurrencyView {
         return document.querySelector(selector);
     }
 
-    displayCurrencies(currencies: Currency[]) {
+    render(currencies: CurrencyType[]) {
+        this.currencyList.innerHTML = '';
         if (currencies.length === 0) {
             const p = this.createElement('p');
             p.textContent = 'No currencies.';
             this.currencyList.append(p);
         } else {
-            currencies.forEach(currency => {
+            currencies.forEach((currency, index) => {
                 const currencyTitle = this.createElement('p', 'currency-title');
                 currencyTitle.innerText = currency.name;
 
@@ -52,29 +63,23 @@ export class CurrencyView {
                 const euroLabel = this.createElement('label') as HTMLInputElement;
                 const euroInput = this.createElement('input') as HTMLInputElement;
                 euroInput.type = 'number';
-                euroInput.id = currency.id;
-                euroInput.value = `${100}`;
+                euroInput.name = 'euro';
+                euroInput.value = `${currency.euroValue}`;
                 euroLabel.innerText = `Euro`;
 
                 const currencyLabel = this.createElement('label') as HTMLInputElement;
                 currencyLabel.innerText = currency.name;
 
                 const currencyInput = this.createElement('input') as HTMLInputElement;
+                currencyInput.name = 'currency'
                 currencyInput.type = 'number';
-                currencyInput.name = currency.id;
-                currencyInput.disabled = true;
-                currencyInput.value = (currency.rate * parseFloat(euroInput.value)).toFixed(2);
+                currencyInput.value = `${currency.currencyValue}`;
 
                 currencyInfoContainer.append(euroLabel, euroInput, currencyLabel, currencyInput);
+                currencyInfoContainer.id = `${index}`;
 
                 this.currencyList.append(rateInfoContainer, currencyInfoContainer);
             });
-            this.currencyList.addEventListener('change', (event) => {
-                const el = (event.target as HTMLInputElement);
-                const currencyResult = this.getElement(`input[name="${el.id}"]`) as HTMLInputElement;
-                const currencyRate = parseFloat(this.getElement(`.currency-rate-${el.id}`).innerText);
-                currencyResult.value = `${(parseFloat(el.value) * currencyRate).toFixed(2)}`;
-            })
         }
     }
 }
