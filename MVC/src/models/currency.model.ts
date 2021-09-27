@@ -6,7 +6,24 @@ export interface CurrencyType {
     currencyValue: number;
 }
 
-export class CurrencyConverter {
+export interface ICurrencyModel {
+    setCurrencies(currencies: CurrencyType[]): void;
+
+    getCurrencies(): CurrencyType[];
+
+    convertFromEuroIndependant(index: number, euroValue: number): void;
+
+    convertToEuroIndependant(index: number, currencyValue: number): void;
+
+    convertFromEuroValues(euroValue: number): void;
+
+    convertToEuroValues(currencyValue: number): void;
+
+    getCurrenciesData(): void;
+}
+
+// @Observable
+export class CurrencyModel implements ICurrencyModel {
     currencies: CurrencyType[]
 
     setCurrencies(currencies: CurrencyType[]) {
@@ -15,6 +32,12 @@ export class CurrencyConverter {
 
     getCurrencies(): CurrencyType[] {
         return this.currencies;
+    }
+
+    async getCurrenciesData() {
+        const response = await fetch('currencies.json');
+        const primaryCurrenciesData = await response.json();
+        this.setCurrencies(primaryCurrenciesData);
     }
 
     convertFromEuroIndependant(index: number, euroValue: number): void {
@@ -40,6 +63,4 @@ export class CurrencyConverter {
             currency.euroValue = parseFloat((currencyValue / currency.rate).toFixed(2));
         })
     }
-
-
 }

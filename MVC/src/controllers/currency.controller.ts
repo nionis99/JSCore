@@ -1,23 +1,18 @@
-import {CurrencyConverter, CurrencyType} from '../models/currency.model';
+import {CurrencyType, ICurrencyModel} from '../models/currency.model';
 import {CurrencyView} from '../views/currency.view';
 
-async function getCurrenciesData() {
-    const response = await fetch('currencies.json');
-    return await response.json();
-}
-
+// @Event listener
 export class CurrencyConverterController {
-    currencyModel: CurrencyConverter;
+    currencyModel: ICurrencyModel;
     currencyView: CurrencyView;
 
-    constructor() {
-        this.currencyModel = new CurrencyConverter()
-        this.currencyView = new CurrencyView(this);
+    constructor(model: ICurrencyModel, view: CurrencyView) {
+        this.currencyModel = model;
+        this.currencyView = view;
     }
 
     async firstRender() {
-        const primaryCurrencies = await getCurrenciesData();
-        this.currencyModel.setCurrencies(primaryCurrencies);
+        this.currencyModel.getCurrenciesData();
         this.render();
     }
 

@@ -1,6 +1,7 @@
 import {CurrencyConverterController} from "../controllers/currency.controller";
 import {CurrencyType} from "../models/currency.model";
 
+// Observer
 export class CurrencyView {
     private app: HTMLElement;
     private choices: HTMLElement;

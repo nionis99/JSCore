@@ -9,7 +9,7 @@ module.exports = {
     resolve: {
         extensions: [".js", ".ts", ".tsx"]
     },
-    entry: ['babel-polyfill', "./src/App.ts"],
+    entry: ["./src/App.ts"],
     devtool: "source-map",
     devServer: {
         liveReload: true,
@@ -25,7 +25,6 @@ module.exports = {
                 loader: "awesome-typescript-loader",
                 options: {
                     useBabel: true,
-                    useCache: true,
                     babelCore: "@babel/core"
                 }
             },
