@@ -32,11 +32,14 @@ export class CurrencyView {
 
     createInput(value: string, type: string, name: string, min?: string, max?: string) {
         const inputEl = this.createElement('input') as HTMLInputElement;
+        if (['number', 'range'].includes(type)) {
+            inputEl.min = min;
+            inputEl.max = max;
+            inputEl.step = "0.01";
+        }
+        inputEl.name = name;
         inputEl.value = value
         inputEl.type = type;
-        if (name) inputEl.name = name;
-        if (min) inputEl.min = min;
-        if (max) inputEl.max = max;
         return inputEl;
     }
 
@@ -52,7 +55,13 @@ export class CurrencyView {
         const rangeLabel = this.createElement('label');
         rangeLabel.innerText = 'range input type';
         const rangeChoice = this.createInput('range', 'radio', 'inputType');
-        this.choices.append(numberLabel, numberChoice, rangeLabel, rangeChoice);
+
+        const indepandantInputsChoice = this.createElement('p');
+        indepandantInputsChoice.innerText = 'Is independant?';
+        const independantCheckbox = this.createInput("true", 'checkbox', 'isIndependant');
+        indepandantInputsChoice.append(independantCheckbox);
+
+        this.choices.append(numberLabel, numberChoice, rangeLabel, rangeChoice, indepandantInputsChoice);
     }
 
     getInputType() {
@@ -61,10 +70,11 @@ export class CurrencyView {
 
     initEventListeners(controller: CurrencyConverterController) {
         this.currencyList.addEventListener('change', (event) => {
+            const isIndependant = !!(this.getElement('input[name="isIndependant"]:checked') as HTMLInputElement);
             const el = (event.target as HTMLInputElement);
-            const index = parseInt(el.parentElement.id);
-            if (el.name === 'euro') controller.convertFromEuro(parseInt(el.value), index);
-            else controller.convertToEuro(parseInt(el.value), index);
+            const index = isIndependant ? parseInt(el.parentElement.id) : undefined;
+            if (el.name === 'euro') controller.convertFromEuro(parseFloat(el.value), index);
+            else controller.convertToEuro(parseFloat(el.value), index);
         });
         this.choices.addEventListener('change', () => controller.render());
     }
