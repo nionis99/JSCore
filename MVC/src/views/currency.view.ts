@@ -32,8 +32,6 @@ export class CurrencyView {
 
     createInput(value: string, type: string, name: string, min?: string, max?: string) {
         const inputEl = this.createElement('input') as HTMLInputElement;
-        inputEl.min = "0";
-        inputEl.max = "10000";
         inputEl.value = value
         inputEl.type = type;
         if (name) inputEl.name = name;
