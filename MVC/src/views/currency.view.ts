@@ -16,7 +16,7 @@ export class CurrencyView {
         this.title.textContent = 'Currency converter';
         this.currencyList = this.createElement('ul', 'currency-list');
         this.initEventListeners(controller);
-        this.renderChoices();
+        this.createChoices();
         this.form.append(this.currencyList);
         this.app.append(this.title, this.choices, this.form);
         controller.firstRender();
@@ -32,11 +32,9 @@ export class CurrencyView {
 
     createInput(value: string, type: string, name: string, min?: string, max?: string) {
         const inputEl = this.createElement('input') as HTMLInputElement;
-        if (['number', 'range'].includes(type)) {
-            inputEl.min = min;
-            inputEl.max = max;
-            inputEl.step = "0.01";
-        }
+        if (['range', 'number'].includes(type)) inputEl.step = "0.05";
+        if (min) inputEl.min = min;
+        if (max) inputEl.max = max;
         inputEl.name = name;
         inputEl.value = value
         inputEl.type = type;
@@ -47,7 +45,7 @@ export class CurrencyView {
         return document.querySelector(selector);
     }
 
-    renderChoices() {
+    createChoices() {
         const numberLabel = this.createElement('label');
         numberLabel.innerText = 'number input type';
         const numberChoice = this.createInput('number', 'radio', 'inputType');
