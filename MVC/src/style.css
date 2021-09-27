@@ -12,7 +12,7 @@
     font-weight: bold;
 }
 
-span{
+.currency-rate {
     margin: 0 .25rem;
 }
 
@@ -20,5 +20,9 @@ span{
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+input {
+    width: 200px;
 }
 

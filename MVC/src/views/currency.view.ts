@@ -3,26 +3,22 @@ import {CurrencyType} from "../models/currency.model";
 
 export class CurrencyView {
     private app: HTMLElement;
+    private choices: HTMLElement;
     private form: HTMLElement;
     private title: HTMLElement;
     private currencyList: HTMLElement;
 
     constructor(controller: CurrencyConverterController) {
         this.app = this.getElement('#root');
+        this.choices = this.createElement('p');
         this.form = this.createElement('form');
         this.title = this.createElement('h1');
         this.title.textContent = 'Currency converter';
         this.currencyList = this.createElement('ul', 'currency-list');
-
-        this.currencyList.addEventListener('change', (event) => {
-            const el = (event.target as HTMLInputElement);
-            const index = parseInt(el.parentElement.id);
-            if (el.name === 'euro') controller.convertFromEuro(index, parseInt(el.value));
-            else controller.convertToEuro(index, parseInt(el.value));
-        })
-
+        this.initEventListeners(controller);
+        this.renderChoices();
         this.form.append(this.currencyList);
-        this.app.append(this.title, this.form);
+        this.app.append(this.title, this.choices, this.form);
         controller.firstRender();
     }
 
@@ -34,11 +30,48 @@ export class CurrencyView {
         return element;
     }
 
+    createInput(value: string, type: string, name: string, min?: string, max?: string) {
+        const inputEl = this.createElement('input') as HTMLInputElement;
+        inputEl.min = "0";
+        inputEl.max = "10000";
+        inputEl.value = value
+        inputEl.type = type;
+        if (name) inputEl.name = name;
+        if (min) inputEl.min = min;
+        if (max) inputEl.max = max;
+        return inputEl;
+    }
+
     getElement(selector: string): HTMLElement {
         return document.querySelector(selector);
     }
 
-    render(currencies: CurrencyType[]) {
+    renderChoices() {
+        const numberLabel = this.createElement('label');
+        numberLabel.innerText = 'number input type';
+        const numberChoice = this.createInput('number', 'radio', 'inputType');
+        numberChoice.checked = true;
+        const rangeLabel = this.createElement('label');
+        rangeLabel.innerText = 'range input type';
+        const rangeChoice = this.createInput('range', 'radio', 'inputType');
+        this.choices.append(numberLabel, numberChoice, rangeLabel, rangeChoice);
+    }
+
+    getInputType() {
+        return (this.getElement('input[name="inputType"]:checked') as HTMLInputElement).value;
+    }
+
+    initEventListeners(controller: CurrencyConverterController) {
+        this.currencyList.addEventListener('change', (event) => {
+            const el = (event.target as HTMLInputElement);
+            const index = parseInt(el.parentElement.id);
+            if (el.name === 'euro') controller.convertFromEuro(parseInt(el.value), index);
+            else controller.convertToEuro(parseInt(el.value), index);
+        });
+        this.choices.addEventListener('change', () => controller.render());
+    }
+
+    render(currencies: CurrencyType[], inputType: string) {
         this.currencyList.innerHTML = '';
         if (currencies.length === 0) {
             const p = this.createElement('p');
@@ -55,25 +88,18 @@ export class CurrencyView {
                 const label = this.createElement('label');
                 label.innerText = `1 Euro is`;
 
-                const rateValue = this.createElement('span', `currency-rate-${currency.id}`) as HTMLInputElement;
+                const rateValue = this.createElement('span', 'currency-rate');
                 rateValue.innerText = currency.rate.toString();
 
                 rateInfoContainer.append(currencyTitle, label, rateValue, currency.name);
 
-                const euroLabel = this.createElement('label') as HTMLInputElement;
-                const euroInput = this.createElement('input') as HTMLInputElement;
-                euroInput.type = 'number';
-                euroInput.name = 'euro';
-                euroInput.value = `${currency.euroValue}`;
-                euroLabel.innerText = `Euro`;
+                const euroLabel = this.createElement('label');
+                const euroInput = this.createInput(currency.euroValue.toString(), inputType, 'euro', '1', '500');
+                euroLabel.innerText = `Euro ${inputType === 'range' ? ': ' + currency.euroValue : ''}`;
 
-                const currencyLabel = this.createElement('label') as HTMLInputElement;
-                currencyLabel.innerText = currency.name;
-
-                const currencyInput = this.createElement('input') as HTMLInputElement;
-                currencyInput.name = 'currency'
-                currencyInput.type = 'number';
-                currencyInput.value = `${currency.currencyValue}`;
+                const currencyLabel = this.createElement('label');
+                const currencyInput = this.createInput(currency.currencyValue.toString(), inputType, 'currency', '1', '10000');
+                currencyLabel.innerText = `${currency.name} ${inputType === 'range' ? ': ' + currency.currencyValue : ''}`;
 
                 currencyInfoContainer.append(euroLabel, euroInput, currencyLabel, currencyInput);
                 currencyInfoContainer.id = `${index}`;

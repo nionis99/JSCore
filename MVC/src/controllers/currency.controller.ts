@@ -21,19 +21,21 @@ export class CurrencyConverterController {
         this.render();
     }
 
-    convertFromEuro(index: number, euroValue: number) {
-        this.currencyModel.convertFromEuro(index, euroValue);
+    convertFromEuro(euroValue: number, index?: number) {
+        if (index !== undefined) this.currencyModel.convertFromEuroIndependant(index, euroValue);
+        else this.currencyModel.convertFromEuroValues(euroValue)
         this.render();
     }
 
-    convertToEuro(index: number, currencyValue: number) {
-        this.currencyModel.convertToEuro(index, currencyValue);
+    convertToEuro(currencyValue: number, index?: number) {
+        if (index !== undefined) this.currencyModel.convertToEuroIndependant(index, currencyValue);
+        else this.currencyModel.convertToEuroValues(currencyValue);
         this.render();
     }
-
 
     render() {
         const currencies: CurrencyType[] = this.currencyModel.getCurrencies();
-        this.currencyView.render(currencies);
+        const inputType = this.currencyView.getInputType();
+        this.currencyView.render(currencies, inputType);
     }
 }
