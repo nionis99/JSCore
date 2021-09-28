@@ -44,7 +44,7 @@ export class CurrencyModel implements ICurrencyModel, Publisher {
     }
 
     unsubscribe(subscriber: Subscriber) {
-        this.subscribers.filter((sub) => sub !== subscriber);
+        this.subscribers = this.subscribers.filter((sub) => sub !== subscriber);
     }
 
     notify(currencies: CurrencyType[], inputType: string): void {
