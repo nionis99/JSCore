@@ -2,7 +2,7 @@ import JobRunner from "./priorityQueue/JobRunner";
 
 const jobRunner = new JobRunner();
 
-const generateRandomNumber = (min, max) => {
+const generateRandomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min) + min);
 };
 

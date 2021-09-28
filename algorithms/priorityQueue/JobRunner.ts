@@ -1,13 +1,13 @@
 import Job from "./Job";
 
 export default class JobRunner {
-    jobs: Job[];
+    jobs: Job[] = [];
 
-    constructor() {
-        this.jobs = [];
+    constructor(jobs?: Job[]) {
+        this.jobs = jobs || [];
     }
 
-    addJob(title, priority) {
+    addJob(title: string, priority: number) {
         let isContain = false;
         const job = new Job(title, priority);
 

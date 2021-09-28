@@ -2,8 +2,9 @@
 exports.__esModule = true;
 var Job_1 = require("./Job");
 var JobRunner = /** @class */ (function () {
-    function JobRunner() {
+    function JobRunner(jobs) {
         this.jobs = [];
+        this.jobs = jobs || [];
     }
     JobRunner.prototype.addJob = function (title, priority) {
         var isContain = false;
@@ -18,6 +19,18 @@ var JobRunner = /** @class */ (function () {
         if (!isContain) {
             this.jobs.push(job);
         }
+    };
+    JobRunner.prototype.runFirst = function () {
+        if (this.isEmpty())
+            return console.log('There is no job');
+        var _a = this.jobs[0], title = _a.title, priority = _a.priority;
+        return console.log("First job is " + title + " and his priority is " + priority);
+    };
+    JobRunner.prototype.runLast = function () {
+        if (this.isEmpty())
+            return console.log('There is no job');
+        var _a = this.jobs[this.jobs.length - 1], title = _a.title, priority = _a.priority;
+        return console.log("Last job is " + title + " and his priority is " + priority);
     };
     JobRunner.prototype.runJobs = function () {
         if (this.isEmpty())
