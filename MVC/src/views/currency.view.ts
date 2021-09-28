@@ -1,26 +1,28 @@
-import {CurrencyConverterController} from "../controllers/currency.controller";
 import {CurrencyType} from "../models/currency.model";
+import controller from "../App";
 
-// Observer
-export class CurrencyView {
+export interface Subscriber {
+    render(currencies: CurrencyType[], inputType: string): void;
+}
+
+export class CurrencyView implements Subscriber {
     private app: HTMLElement;
     private choices: HTMLElement;
     private form: HTMLElement;
     private title: HTMLElement;
     private currencyList: HTMLElement;
 
-    constructor(controller: CurrencyConverterController) {
+    constructor() {
         this.app = this.getElement('#root');
         this.choices = this.createElement('p');
         this.form = this.createElement('form');
         this.title = this.createElement('h1');
         this.title.textContent = 'Currency converter';
         this.currencyList = this.createElement('ul', 'currency-list');
-        this.initEventListeners(controller);
+        this.initEventListeners();
         this.createChoices();
         this.form.append(this.currencyList);
         this.app.append(this.title, this.choices, this.form);
-        controller.firstRender();
     }
 
     createElement(tag: string, className?: string) {
@@ -67,7 +69,7 @@ export class CurrencyView {
         return (this.getElement('input[name="inputType"]:checked') as HTMLInputElement).value;
     }
 
-    initEventListeners(controller: CurrencyConverterController) {
+    initEventListeners() {
         this.currencyList.addEventListener('change', (event) => {
             const isIndependant = !!(this.getElement('input[name="isIndependant"]:checked') as HTMLInputElement);
             const el = (event.target as HTMLInputElement);
@@ -75,7 +77,7 @@ export class CurrencyView {
             if (el.name === 'euro') controller.convertFromEuro(parseFloat(el.value), index);
             else controller.convertToEuro(parseFloat(el.value), index);
         });
-        this.choices.addEventListener('change', () => controller.render());
+        this.choices.addEventListener('change', () => controller.changeInputType());
     }
 
     render(currencies: CurrencyType[], inputType: string) {

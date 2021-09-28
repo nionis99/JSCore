@@ -1,3 +1,5 @@
+import {Subscriber} from "../views/currency.view";
+
 export interface CurrencyType {
     id: number;
     name: string;
@@ -6,7 +8,17 @@ export interface CurrencyType {
     currencyValue: number;
 }
 
+export interface Publisher {
+    subscribe(subscriber: Subscriber): void;
+
+    unsubscribe(subscriber: Subscriber): void;
+
+    notify(currencies: CurrencyType[], inputType: string): void;
+}
+
 export interface ICurrencyModel {
+    setInputType(inputType: string): void;
+
     setCurrencies(currencies: CurrencyType[]): void;
 
     getCurrencies(): CurrencyType[];
@@ -22,9 +34,27 @@ export interface ICurrencyModel {
     getCurrenciesData(): void;
 }
 
-// @Observable
-export class CurrencyModel implements ICurrencyModel {
-    currencies: CurrencyType[]
+export class CurrencyModel implements ICurrencyModel, Publisher {
+    currencies: CurrencyType[];
+    subscribers: Subscriber[] = [];
+    inputType: string;
+
+    subscribe(subscriber: Subscriber) {
+        this.subscribers.push(subscriber);
+    }
+
+    unsubscribe(subscriber: Subscriber) {
+        this.subscribers.filter((sub) => sub !== subscriber);
+    }
+
+    notify(currencies: CurrencyType[], inputType: string): void {
+        this.subscribers.forEach((subscriber) => subscriber.render(currencies, inputType));
+    }
+
+    setInputType(inputType: string) {
+        this.inputType = inputType;
+        this.notify(this.currencies, inputType);
+    }
 
     setCurrencies(currencies: CurrencyType[]) {
         this.currencies = currencies;
@@ -38,16 +68,19 @@ export class CurrencyModel implements ICurrencyModel {
         const response = await fetch('currencies.json');
         const primaryCurrenciesData = await response.json();
         this.setCurrencies(primaryCurrenciesData);
+        this.notify(this.currencies, this.inputType);
     }
 
     convertFromEuroIndependant(index: number, euroValue: number): void {
         this.currencies[index].euroValue = euroValue;
         this.currencies[index].currencyValue = parseFloat((euroValue * this.currencies[index].rate).toFixed(2));
+        this.notify(this.currencies, this.inputType);
     }
 
     convertToEuroIndependant(index: number, currencyValue: number): void {
         this.currencies[index].currencyValue = currencyValue;
         this.currencies[index].euroValue = parseFloat((currencyValue / this.currencies[index].rate).toFixed(2));
+        this.notify(this.currencies, this.inputType);
     }
 
     convertFromEuroValues(euroValue: number): void {
@@ -55,6 +88,7 @@ export class CurrencyModel implements ICurrencyModel {
             currency.euroValue = euroValue;
             currency.currencyValue = parseFloat((euroValue * currency.rate).toFixed(2));
         })
+        this.notify(this.currencies, this.inputType);
     }
 
     convertToEuroValues(currencyValue: number): void {
@@ -62,5 +96,6 @@ export class CurrencyModel implements ICurrencyModel {
             currency.currencyValue = currencyValue;
             currency.euroValue = parseFloat((currencyValue / currency.rate).toFixed(2));
         })
+        this.notify(this.currencies, this.inputType);
     }
 }
