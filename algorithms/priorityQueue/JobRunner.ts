@@ -19,9 +19,7 @@ export default class JobRunner {
             }
         }
 
-        if (!isContain) {
-            this.jobs.push(job);
-        }
+        if (!isContain) this.jobs.push(job);
     }
 
     runFirst() {
