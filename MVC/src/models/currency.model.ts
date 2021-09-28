@@ -37,7 +37,7 @@ export interface ICurrencyModel {
 export class CurrencyModel implements ICurrencyModel, Publisher {
     currencies: CurrencyType[];
     subscribers: Subscriber[] = [];
-    inputType: string;
+    inputType: string = 'number';
 
     subscribe(subscriber: Subscriber) {
         this.subscribers.push(subscriber);
