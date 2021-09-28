@@ -1,0 +1,28 @@
+.currency-list {
+    width: 600px;
+    border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    padding-right: 50px;
+}
+
+.currency-title {
+    font-weight: bold;
+}
+
+.currency-rate {
+    margin: 0 .25rem;
+}
+
+.currency-converter {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+input {
+    width: 200px;
+}
+

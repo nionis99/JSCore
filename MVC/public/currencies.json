@@ -1,0 +1,38 @@
+[
+  {
+    "name": "DM",
+    "rate": 1.96,
+    "euroValue": 100,
+    "currencyValue": 196
+  },
+  {
+    "name": "Belg. Franc",
+    "rate": 40.34,
+    "euroValue": 100,
+    "currencyValue": 4034
+  },
+  {
+    "name": "Franz. Franc",
+    "rate": 6.56,
+    "euroValue": 100,
+    "currencyValue": 656
+  },
+  {
+    "name": "Ir. Pfund",
+    "rate": 0.79,
+    "euroValue": 100,
+    "currencyValue": 79
+  },
+  {
+    "name": "Ital. Lira",
+    "rate": 1936.27,
+    "euroValue": 100,
+    "currencyValue": 193627
+  },
+  {
+    "name": "US $",
+    "rate": 1.06,
+    "euroValue": 100,
+    "currencyValue": 106
+  }
+]
