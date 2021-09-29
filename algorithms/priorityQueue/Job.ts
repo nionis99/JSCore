@@ -1,8 +1,5 @@
 export default class Job {
-    title: string;
-    priority: number;
-
-    constructor(title: string, priority: number) {
+    constructor(public title: string, public priority: number) {
         this.title = title;
         this.priority = priority;
     }

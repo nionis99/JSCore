@@ -1,4 +1,5 @@
 import JobRunner from "./priorityQueue/JobRunner";
+import Job from "./priorityQueue/Job";
 
 const jobRunner = new JobRunner();
 
@@ -7,7 +8,7 @@ const generateRandomNumber = (min: number, max: number) => {
 };
 
 for (let i = 0; i < 10000; i++) {
-    jobRunner.addJob(`Job-${i + 1}`, generateRandomNumber(1, 10000))
+    jobRunner.addJob(new Job(`Job-${i + 1}`, generateRandomNumber(1, 10000)))
 }
 
 jobRunner.runJobs();
