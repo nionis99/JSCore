@@ -2,6 +2,7 @@ import Job from "./Job";
 
 export default class JobRunner {
     jobs: Job[] = [];
+    executed: number[] = [];
 
     constructor(jobs: Job[] = []) {
         this.jobs = jobs;
@@ -44,8 +45,13 @@ export default class JobRunner {
             return console.log('There is no jobs');
         }
         for (let i = 0; i < this.jobs.length; i++) {
-            console.log(`${this.jobs[i].title} and his priority is ${this.jobs[i].priority}`);
+            // console.log(`${this.jobs[i].title} and his priority is ${this.jobs[i].priority}`); // Jobs
+            this.executed.push(this.jobs[i].priority);
         }
+    }
+
+    printExecuted() {
+        console.log(this.executed.toString());
     }
 
     isEmpty() {
