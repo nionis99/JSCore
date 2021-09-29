@@ -7,7 +7,7 @@ var JobRunner = /** @class */ (function () {
         this.executed = [];
         this.jobs = jobs;
     }
-    JobRunner.prototype.addJob = function (job) {
+    JobRunner.prototype.enqueue = function (job) {
         var isContain = false;
         for (var i = 0; i < this.jobs.length; i++) {
             if (this.jobs[i].priority > job.priority) {
@@ -19,6 +19,12 @@ var JobRunner = /** @class */ (function () {
         if (!isContain) {
             this.jobs.push(job);
         }
+    };
+    JobRunner.prototype.dequeue = function () {
+        if (this.isEmpty()) {
+            return console.log('There is no job');
+        }
+        return this.jobs.shift();
     };
     JobRunner.prototype.runFirst = function () {
         if (this.isEmpty()) {
@@ -38,16 +44,20 @@ var JobRunner = /** @class */ (function () {
         if (this.isEmpty()) {
             return console.log('There is no jobs');
         }
-        for (var i = 0; i < this.jobs.length; i++) {
+        for (var i = 0; i < this.jobs.length;) {
             // console.log(`${this.jobs[i].title} and his priority is ${this.jobs[i].priority}`); // Jobs
             this.executed.push(this.jobs[i].priority);
+            this.dequeue();
         }
     };
     JobRunner.prototype.printExecuted = function () {
         console.log(this.executed.toString());
     };
+    JobRunner.prototype.jobsCount = function () {
+        return this.jobs.length;
+    };
     JobRunner.prototype.isEmpty = function () {
-        return this.jobs.length == 0;
+        return this.jobsCount() == 0;
     };
     return JobRunner;
 }());

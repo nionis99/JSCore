@@ -8,7 +8,7 @@ export default class JobRunner {
         this.jobs = jobs;
     }
 
-    addJob(job: Job) {
+    enqueue(job: Job) {
         let isContain = false;
         for (let i = 0; i < this.jobs.length; i++) {
             if (this.jobs[i].priority > job.priority) {
@@ -21,6 +21,14 @@ export default class JobRunner {
         if (!isContain) {
             this.jobs.push(job);
         }
+    }
+
+    dequeue() {
+        if (this.isEmpty()) {
+            return console.log('There is no job');
+        }
+
+        return this.jobs.shift();
     }
 
     runFirst() {
@@ -44,9 +52,10 @@ export default class JobRunner {
         if (this.isEmpty()) {
             return console.log('There is no jobs');
         }
-        for (let i = 0; i < this.jobs.length; i++) {
+        for (let i = 0; i < this.jobs.length;) {
             // console.log(`${this.jobs[i].title} and his priority is ${this.jobs[i].priority}`); // Jobs
             this.executed.push(this.jobs[i].priority);
+            this.dequeue();
         }
     }
 
@@ -54,7 +63,13 @@ export default class JobRunner {
         console.log(this.executed.toString());
     }
 
-    isEmpty() {
-        return this.jobs.length == 0;
+
+    jobsCount() {
+        return this.jobs.length;
     }
+
+    isEmpty() {
+        return this.jobsCount() == 0;
+    }
+
 }
