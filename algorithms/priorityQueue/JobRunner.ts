@@ -31,29 +31,11 @@ export default class JobRunner {
         return this.jobs.shift();
     }
 
-    runFirst() {
-        if (this.isEmpty()) {
-            return console.log('There is no job');
-        }
-        const {title, priority} = this.jobs[0];
-        return console.log(`First job is ${title} and his priority is ${priority}`);
-    }
-
-    runLast() {
-        if (this.isEmpty()) {
-            return console.log('There is no job');
-        }
-        const {title, priority} = this.jobs[this.jobs.length - 1];
-        return console.log(`Last job is ${title} and his priority is ${priority}`);
-    }
-
-
     runJobs() {
         if (this.isEmpty()) {
             return console.log('There is no jobs');
         }
         for (let i = 0; i < this.jobs.length;) {
-            // console.log(`${this.jobs[i].title} and his priority is ${this.jobs[i].priority}`); // Jobs
             this.executed.push(this.jobs[i].priority);
             this.dequeue();
         }
