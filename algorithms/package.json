@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "npx tsc usage.ts",
+    "run": "node usage.js"
+  },
+  "dependencies": {
+    "typescript": "^4.4.2"
+  }
+}
