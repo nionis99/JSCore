@@ -23,11 +23,12 @@ weightedGraph.addVertex(); // 0
 weightedGraph.addVertex(); // 1
 weightedGraph.addVertex(); // 2
 weightedGraph.addVertex(); // 3
-weightedGraph.addEdge(0,1,4);
-weightedGraph.addEdge(1,2,13);
-weightedGraph.addEdge(1,3,16);
-weightedGraph.addEdge(2,3,8);
-weightedGraph.addEdge(2,4,12);
-weightedGraph.addEdge(0,4,25);
+weightedGraph.addEdge(0, 1, 4);
+weightedGraph.addEdge(1, 2, 13);
+weightedGraph.addEdge(1, 3, 16);
+weightedGraph.addEdge(2, 3, 8);
+weightedGraph.addEdge(2, 4, 12);
+weightedGraph.addEdge(0, 4, 25);
+weightedGraph.printAdjacencyMatrix();
 dijkstra(weightedGraph.adjacencyList, 0);
 
