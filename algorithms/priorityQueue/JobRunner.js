@@ -26,26 +26,11 @@ var JobRunner = /** @class */ (function () {
         }
         return this.jobs.shift();
     };
-    JobRunner.prototype.runFirst = function () {
-        if (this.isEmpty()) {
-            return console.log('There is no job');
-        }
-        var _a = this.jobs[0], title = _a.title, priority = _a.priority;
-        return console.log("First job is " + title + " and his priority is " + priority);
-    };
-    JobRunner.prototype.runLast = function () {
-        if (this.isEmpty()) {
-            return console.log('There is no job');
-        }
-        var _a = this.jobs[this.jobs.length - 1], title = _a.title, priority = _a.priority;
-        return console.log("Last job is " + title + " and his priority is " + priority);
-    };
     JobRunner.prototype.runJobs = function () {
         if (this.isEmpty()) {
             return console.log('There is no jobs');
         }
         for (var i = 0; i < this.jobs.length;) {
-            // console.log(`${this.jobs[i].title} and his priority is ${this.jobs[i].priority}`); // Jobs
             this.executed.push(this.jobs[i].priority);
             this.dequeue();
         }
