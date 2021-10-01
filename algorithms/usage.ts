@@ -23,6 +23,7 @@ weightedGraph.addVertex(); // 0
 weightedGraph.addVertex(); // 1
 weightedGraph.addVertex(); // 2
 weightedGraph.addVertex(); // 3
+weightedGraph.addVertex(); // 4
 weightedGraph.addEdge(0, 1, 4);
 weightedGraph.addEdge(1, 2, 13);
 weightedGraph.addEdge(1, 3, 16);
