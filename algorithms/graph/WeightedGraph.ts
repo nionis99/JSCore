@@ -1,8 +1,11 @@
 export default class WeightedGraph {
-    size: number;
     adjacencyList: number[][];
 
-    constructor(size = 1) {
+    constructor(private size = 1) {
+        this.fillAdjacencyList(size);
+    }
+
+    fillAdjacencyList(size: number = 1) {
         this.size = size;
         this.adjacencyList = [[]] as number[][];
         for (let i = 0; i < size; i++) {
@@ -24,7 +27,7 @@ export default class WeightedGraph {
 
     removeVertex(vertex) {
         if (vertex < 0 || vertex > this.size - 1) {
-            console.log('Invalid vertex');
+            throw new Error('Invalid vertex');
         } else {
             while (vertex < this.size - 1) {
                 for (let i = 0; i < this.size; i++) {
@@ -44,12 +47,12 @@ export default class WeightedGraph {
     checkAndSetVertexes(vertexFrom: number, vertexTo: number, weight = 0) {
         if (vertexFrom > this.size - 1 || vertexTo > this.size - 1) {
             throw new Error("invalid vertex");
-        } else if (vertexFrom === vertexTo) {
-            throw new Error('vertexes are equals');
-        } else {
-            this.adjacencyList[vertexFrom][vertexTo] = weight;
-            this.adjacencyList[vertexTo][vertexFrom] = weight;
         }
+        if (vertexFrom === vertexTo) {
+            throw new Error('vertexes are equals');
+        }
+        this.adjacencyList[vertexFrom][vertexTo] = weight;
+        this.adjacencyList[vertexTo][vertexFrom] = weight;
     }
 
     addEdge(vertexFrom: number, vertexTo: number, weight = 1) {
